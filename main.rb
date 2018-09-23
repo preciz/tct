@@ -110,7 +110,7 @@ class Tutor
   end
 end
 
-tutor = Tutor.new(file: "test.ex")
+tutor = Tutor.new(file: ARGV[0])
 
 system 'clear'
 
