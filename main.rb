@@ -112,6 +112,4 @@ end
 
 tutor = Tutor.new(file: ARGV[0])
 
-system 'clear'
-
 tutor.start
