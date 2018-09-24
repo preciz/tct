@@ -1,3 +1,4 @@
+require 'io/console'
 require 'ostruct'
 require 'curses'
 
@@ -121,6 +122,39 @@ class Tutor
   end
 end
 
-tutor = Tutor.new(file: ARGV[0])
+repo = 'https://github.com/elixir-lang/elixir.git'
+dir_name = 'elixir'
+file_extension = '*.ex'
+
+if Dir.exists?(dir_name)
+  system "cd #{dir_name} && git pull"
+else
+  system "git clone #{repo} #{dir_name}"
+end
+
+files = `cd #{dir_name} && git ls-files #{file_extension}`
+
+files = files.split("\n")
+
+loop do
+  file = files.sample
+
+  puts 'Practice with this file? (y/n/q)'
+  puts
+
+  puts `cd #{dir_name} && head -20 #{file.strip}`
+
+  case STDIN.getch
+  when 'y'
+    @file = file
+    break
+  when 'q'
+    exit
+  else
+    system 'clear'
+  end
+end
+
+tutor = Tutor.new(file: "#{dir_name}/#{@file}")
 
 tutor.start
