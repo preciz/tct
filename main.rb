@@ -11,7 +11,7 @@ class Tutor
                 :mismatch,
                 :window
 
-  def initialize(file:, line: 0, char: 0, visible_line_count: 10)
+  def initialize(file:, line: 0, char: 0, visible_line_count: 14)
     @lines = File.readlines(file).map(&:rstrip)
     @position = OpenStruct.new(line: line, char: char)
     @initial_cursor = @cursor = OpenStruct.new(row: 2, column: 0)
@@ -32,7 +32,7 @@ class Tutor
   end
 
   def set_cursor
-    window.setpos((position.line < 3 ? position.line : 2) + cursor.row, position.char + cursor.column)
+    window.setpos((position.line < 5 ? position.line : 4) + cursor.row, position.char + cursor.column)
   end
 
   def advance_line
@@ -95,7 +95,7 @@ class Tutor
   end
 
   def start_line
-    position.line < 3 ? 0 : (position.line - 2)
+    position.line < 5 ? 0 : (position.line - 4)
   end
 
   def visible_lines
