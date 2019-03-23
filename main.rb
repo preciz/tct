@@ -80,7 +80,7 @@ class Tutor
   end
 
   def draw
-    window.clear
+    window.refresh
 
     set_initial_cursor
 
@@ -139,7 +139,10 @@ files = files.split("\n")
 loop do
   file = files.sample
 
+  system 'clear'
+
   puts 'Practice with this file? (y/n/q)'
+  puts file
   puts
 
   puts `cd #{dir_name} && head -20 #{file.strip}`
@@ -150,8 +153,6 @@ loop do
     break
   when 'q'
     exit
-  else
-    system 'clear'
   end
 end
 
