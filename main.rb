@@ -9,7 +9,6 @@ class Tutor
                 :initial_cursor,
                 :cursor,
                 :visible_line_count,
-                :mismatch,
                 :window
 
   def initialize(file:, line: 0, char: 0, visible_line_count: 14)
@@ -17,7 +16,6 @@ class Tutor
     @position = OpenStruct.new(line: line, char: char)
     @initial_cursor = @cursor = OpenStruct.new(row: 2, column: 0)
     @visible_line_count = visible_line_count
-    @mismatch = false
   end
 
   def line
@@ -69,10 +67,7 @@ class Tutor
       ch = window.getch
 
       if ch == char
-        self.mismatch = false
         advance_position
-      else
-        self.mismatch = true
       end
     end
   ensure
@@ -85,11 +80,7 @@ class Tutor
     set_initial_cursor
 
     visible_lines.each do |visible_line|
-      if mismatch && visible_line == line
-        window.addstr(visible_line + " ERROR!" + "\n")
-      else
-        window.addstr(visible_line + "\n")
-      end
+      window.addstr(visible_line + "\n")
     end
 
     set_cursor
