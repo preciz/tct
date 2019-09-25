@@ -66,7 +66,7 @@ class Tutor
 
       ch = window.getch
 
-      if ch == char
+      if ch == char || ch == "+"
         advance_position
       end
     end
