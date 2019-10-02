@@ -113,9 +113,9 @@ class Tutor
   end
 end
 
-repo = 'https://github.com/elixir-lang/elixir.git'
-dir_name = 'elixir'
-file_extension = '*.ex'
+repo = 'https://github.com/phoenixframework/phoenix_live_view.git'
+dir_name = 'phoenix_live_view'
+file_extension = '.ex'
 
 if Dir.exists?(dir_name)
   system "cd #{dir_name} && git pull"
@@ -123,12 +123,20 @@ else
   system "git clone #{repo} #{dir_name}"
 end
 
-files = `cd #{dir_name} && git ls-files #{file_extension}`
+files = `cd #{dir_name} && git ls-files`
 
-files = files.split("\n")
+files = files.split("\n").filter {|fname| fname[file_extension]}
 
 loop do
-  file = files.sample
+  @file_at ||= 0
+
+  file = files[@file_at]
+
+  if file.nil?
+    system 'clear'
+    puts "No more files"
+    exit
+  end
 
   system 'clear'
 
@@ -137,6 +145,8 @@ loop do
   puts
 
   puts `cd #{dir_name} && head -20 #{file.strip}`
+
+  @file_at += 1
 
   case STDIN.getch
   when 'y'
