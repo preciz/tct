@@ -123,40 +123,50 @@ else
   system "git clone #{repo} #{dir_name}"
 end
 
-files = `cd #{dir_name} && git ls-files`
+if ARGV[0] == nil
+  files = `cd #{dir_name} && git ls-files`
 
-files = files.split("\n").filter {|fname| fname[file_extension]}
+  files = files.split("\n").filter {|fname| fname[file_extension]}
 
-loop do
-  @file_at ||= 0
+  loop do
+    @file_at ||= 0
 
-  file = files[@file_at]
+    #file = files[@file_at]
+    file = files.sample
 
-  if file.nil?
+    if file.nil?
+      system 'clear'
+      puts "No more files"
+      exit
+    end
+
     system 'clear'
-    puts "No more files"
-    exit
+
+    puts 'Practice with this file? (y/n/q)'
+    puts file
+    puts
+
+    puts `cd #{dir_name} && head -20 #{file.strip}`
+
+    @file_at += 1
+
+    case STDIN.getch
+    when 'y'
+      @file = file
+      break
+    when 'q'
+      exit
+    end
   end
 
-  system 'clear'
+  file = "#{dir_name}/#{@file}"
+  line = 0
+else
+  file, line = ARGV[0].split(':')
 
-  puts 'Practice with this file? (y/n/q)'
-  puts file
-  puts
-
-  puts `cd #{dir_name} && head -20 #{file.strip}`
-
-  @file_at += 1
-
-  case STDIN.getch
-  when 'y'
-    @file = file
-    break
-  when 'q'
-    exit
-  end
+  line = line.to_i
 end
 
-tutor = Tutor.new(file: "#{dir_name}/#{@file}")
+tutor = Tutor.new(file: file, line: line)
 
 tutor.start
