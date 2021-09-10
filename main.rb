@@ -59,7 +59,7 @@ class Tutor
   def start
     Curses.init_screen
 
-    @window ||= Curses::Window.new(20, Curses.cols, 0, 0)
+    @window ||= Curses::Window.new(21, Curses.cols, 0, 0)
 
     loop do
       draw
