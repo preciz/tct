@@ -129,9 +129,6 @@ if ARGV[0] == nil
   files = files.split("\n").filter {|fname| fname[file_extension]}
 
   loop do
-    @file_at ||= 0
-
-    #file = files[@file_at]
     file = files.sample
 
     if file.nil?
@@ -148,8 +145,6 @@ if ARGV[0] == nil
 
     puts `cd #{dir_name} && head -20 #{file.strip}`
 
-    @file_at += 1
-
     case STDIN.getch
     when 'y'
       @file = file
@@ -157,6 +152,8 @@ if ARGV[0] == nil
     when 'q'
       exit
     end
+
+    files = files - [file]
   end
 
   file = "#{dir_name}/#{@file}"
