@@ -114,7 +114,8 @@ class Tutor
 end
 
 repo = 'https://github.com/phoenixframework/phoenix_live_view.git'
-dir_name = 'phoenix_live_view'
+
+dir_name = repo.split('.git').last.split('/').last
 file_extension = '.ex'
 
 if Dir.exists?(dir_name)
